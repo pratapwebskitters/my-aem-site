@@ -1,9 +1,10 @@
 export default function decorate(block) {
   const list = document.createElement('ul');
+  const authorFirst = block.classList.contains('author-first');
 
   [...block.children].forEach((row) => {
     const cells = [...row.children];
-    const [quote, attribution] = cells;
+    const [quote, attribution] = authorFirst ? [cells[1], cells[0]] : cells;
 
     if (!row.textContent.trim() && !row.querySelector('img, video, audio, svg, iframe')) return;
 
@@ -18,6 +19,7 @@ export default function decorate(block) {
     }
     attribution?.classList.add('testimonials-attribution');
     card.append(...cells);
+    if (authorFirst && quote) card.prepend(quote);
     list.append(card);
   });
 

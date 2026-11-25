@@ -155,6 +155,32 @@ export function decorateMain(main) {
   decorateButtons(main);
 }
 
+function decorateHome(main) {
+  main.classList.add('home-page');
+  const intro = main.querySelector(':scope > .section:first-child > .default-content-wrapper');
+  const heading = intro?.querySelector(':scope > h1');
+  const media = heading?.previousElementSibling;
+
+  if (media?.matches('p') && media.querySelector(':scope > picture') && media.children.length === 1) {
+    const copy = document.createElement('div');
+    copy.className = 'home-hero-copy';
+    const hero = document.createElement('div');
+    hero.className = 'home-hero';
+    const introContent = [heading];
+    let paragraph = heading.nextElementSibling;
+    while (paragraph?.matches('p')) {
+      introContent.push(paragraph);
+      paragraph = paragraph.nextElementSibling;
+    }
+    media.before(hero);
+    media.classList.add('home-hero-media');
+    copy.append(...introContent);
+    hero.append(copy, media);
+  }
+
+  main.querySelector('.testimonials')?.classList.add('author-first');
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -165,6 +191,10 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    if (['/', '/index'].includes(window.location.pathname)) {
+      decorateHome(main);
+      await loadCSS(`${window.hlx.codeBasePath}/styles/home.css`);
+    }
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
