@@ -1,5 +1,6 @@
 import { getLocalePrefix } from '../../scripts/scripts.js';
 import fetchPlaceholders from '../../scripts/placeholders.js';
+import formatPrice from '../../scripts/prices.js';
 import { changeCart } from '../../scripts/cart.js';
 
 function createCard(product, locale, addLabel, status) {
@@ -11,7 +12,7 @@ function createCard(product, locale, addLabel, status) {
   const fields = [
     ['product-list-category', product.category],
     ['product-list-description', product.description],
-    ['product-list-price', product.price ? `Price: ${product.price}` : ''],
+    ['product-list-price', product.price ? `Price: ${formatPrice(product.price, locale)}` : ''],
   ];
   fields.forEach(([className, value]) => {
     if (!value) return;

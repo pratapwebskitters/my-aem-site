@@ -1,5 +1,6 @@
 import { getLocalePrefix } from '../../scripts/scripts.js';
 import fetchPlaceholders from '../../scripts/placeholders.js';
+import formatPrice from '../../scripts/prices.js';
 import { changeCart, readCart } from '../../scripts/cart.js';
 
 export default async function decorate(block) {
@@ -45,7 +46,8 @@ export default async function decorate(block) {
     list.replaceChildren(...items.map((item, index) => {
       const row = document.createElement('li');
       const text = document.createElement('span');
-      text.textContent = `${item.title} × ${item.quantity}`;
+      const price = formatPrice(item.price, locale);
+      text.textContent = `${item.title} × ${item.quantity}${price ? ` · ${price} each` : ''}`;
       const remove = document.createElement('button');
       remove.type = 'button';
       remove.textContent = 'Remove';
