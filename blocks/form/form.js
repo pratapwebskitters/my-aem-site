@@ -76,31 +76,6 @@ function createField({
   return { control, validate };
 }
 
-async function submitForm(endpoint, data) {
-  if (!endpoint) return false;
-
-  const { hostname, pathname } = endpoint;
-  if (['web3forms.com', 'www.web3forms.com'].includes(hostname)) return false;
-  if (hostname === 'api.web3forms.com' && /^\/submit\/?$/.test(pathname) && !data.access_key) return false;
-
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(data),
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!response.ok) return false;
-    if (response.headers.get('content-type')?.includes('application/json')) {
-      const result = await response.json();
-      return result?.success !== false;
-    }
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 export default async function decorate(block) {
   const row = block.firstElementChild;
   const source = getURL(row?.querySelector('a[href]')?.href || row?.textContent.trim());
@@ -143,7 +118,11 @@ export default async function decorate(block) {
   }
 
   const submit = rows.find(isSubmit);
-  const endpoint = getURL(submit?.placeholder);
+  const endpoint = getURL(submit?.placeholder || 'https://web3forms.com');
+  // The Web3Forms homepage is the authoring default. POST to its API instead.
+  const submitUrl = ['web3forms.com', 'www.web3forms.com'].includes(endpoint?.hostname) && endpoint.pathname === '/'
+    ? 'https://api.web3forms.com/submit'
+    : endpoint?.href;
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'button primary form-submit';
@@ -166,18 +145,36 @@ export default async function decorate(block) {
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form));
+    const payload = Object.fromEntries(new FormData(form));
     button.disabled = true;
     button.textContent = 'Submitting…';
     status.textContent = 'Submitting form…';
-    const sent = await submitForm(endpoint, data);
-    button.disabled = false;
-    button.textContent = buttonLabel;
-    if (sent) HTMLFormElement.prototype.reset.call(form);
 
-    status.classList.add(sent ? 'form-success' : 'form-preview');
-    status.textContent = sent
-      ? 'Thank you! Your form was submitted successfully.'
-      : 'Submission preview complete. Delivery was not confirmed.';
+    try {
+      if (!submitUrl) throw new Error('The submission URL is invalid.');
+      const response = await fetch(submitUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(10000),
+      });
+      const result = await response.json().catch(() => null);
+      if (response.ok && result?.success) {
+        HTMLFormElement.prototype.reset.call(form);
+        status.classList.add('form-success');
+        status.textContent = 'Thank you! Your message has been sent.';
+      } else {
+        status.classList.add('form-submit-error');
+        status.textContent = result?.message || `Unable to send your message (HTTP ${response.status}).`;
+      }
+    } catch {
+      status.classList.add('form-submit-error');
+      status.textContent = submitUrl
+        ? 'Unable to reach the submission service. Please try again.'
+        : 'The submission URL is invalid.';
+    } finally {
+      button.disabled = false;
+      button.textContent = buttonLabel;
+    }
   });
 }

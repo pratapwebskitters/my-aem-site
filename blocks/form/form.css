@@ -86,7 +86,7 @@
 }
 
 .form .form-success,
-.form .form-preview {
+.form .form-submit-error {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -97,7 +97,7 @@
   color: #145b36;
 }
 
-.form .form-preview {
-  background: #eef4ff;
-  color: #243d65;
+.form .form-submit-error {
+  background: #fceeee;
+  color: #a22626;
 }
