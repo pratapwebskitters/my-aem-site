@@ -1,4 +1,8 @@
-function createCard(product) {
+import { getLocalePrefix } from '../../scripts/scripts.js';
+import fetchPlaceholders from '../../scripts/placeholders.js';
+import { changeCart } from '../../scripts/cart.js';
+
+function createCard(product, locale, addLabel, status) {
   const card = document.createElement('li');
   const title = document.createElement('h3');
   title.textContent = product.title;
@@ -16,6 +20,18 @@ function createCard(product) {
     field.textContent = value;
     card.append(field);
   });
+  if (locale) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'button primary';
+    add.textContent = addLabel;
+    add.setAttribute('aria-label', `${addLabel}: ${product.title}`);
+    add.addEventListener('click', () => {
+      changeCart(locale, product, 1);
+      status.textContent = `${product.title} added.`;
+    });
+    card.append(add);
+  }
   return card;
 }
 
@@ -62,10 +78,14 @@ export default async function decorate(block) {
   });
   filter.append('Category', select);
 
+  const locale = getLocalePrefix();
+  const placeholders = locale ? await fetchPlaceholders(locale) : {};
+  const addLabel = placeholders.addToCart || (locale === '/in' ? 'Add to Bag' : 'Add to Cart');
+
   const grid = document.createElement('ul');
   grid.className = 'product-list-grid';
   const cards = products.map((product) => {
-    const card = createCard(product);
+    const card = createCard(product, locale, addLabel, status);
     grid.append(card);
     return { card, category: product.category.toLowerCase() };
   });

@@ -73,6 +73,11 @@ function buildWidgetAutoBlocks(main) {
   });
 }
 
+export function getLocalePrefix() {
+  const [, region] = window.location.pathname.split('/');
+  return ['en', 'in'].includes(region) ? `/${region}` : '';
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -97,6 +102,10 @@ function buildAutoBlocks(main) {
       });
     }
     buildWidgetAutoBlocks(main);
+    if (getLocalePrefix() && main === document.querySelector('main')) {
+      const products = main.querySelector('.product-list');
+      if (products && !main.querySelector('.cart-drawer')) products.before(buildBlock('cart-drawer', ''));
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -146,7 +155,6 @@ function decorateButtons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);

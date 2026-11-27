@@ -1,0 +1,53 @@
+.cart-drawer dialog {
+  position: fixed;
+  inset: 0 0 0 auto;
+  box-sizing: border-box;
+  width: min(100%, 26rem);
+  max-width: none;
+  max-height: none;
+  height: 100dvh;
+  margin: 0;
+  padding: clamp(16px, 5vw, 32px);
+  overflow: auto;
+  border: 0;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.cart-drawer dialog::backdrop {
+  background: rgb(20 36 55 / 48%);
+}
+
+.cart-drawer .cart-drawer-heading,
+.cart-drawer li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cart-drawer h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.cart-drawer ul {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart-drawer li {
+  padding-block: 12px;
+  border-bottom: 1px solid #dce6ef;
+  overflow-wrap: anywhere;
+}
+
+.cart-drawer button:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.cart-drawer button:disabled {
+  cursor: default;
+}

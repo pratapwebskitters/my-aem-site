@@ -1,4 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { getLocalePrefix } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 import decorateSearch from './header-search.js';
 
@@ -89,6 +90,22 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+function createRegionSwitcher(locale) {
+  const switcher = document.createElement('div');
+  switcher.className = 'nav-regions';
+  switcher.setAttribute('role', 'group');
+  switcher.setAttribute('aria-label', 'Region switcher');
+  [['en', 'English Global Storefront'], ['in', 'India Storefront']].forEach(([region, label]) => {
+    const link = document.createElement('a');
+    link.href = `/${region}/`;
+    link.textContent = region.toUpperCase();
+    link.setAttribute('aria-label', label);
+    if (locale === `/${region}`) link.setAttribute('aria-current', 'true');
+    switcher.append(link);
+  });
+  return switcher;
+}
+
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -97,7 +114,9 @@ export default async function decorate(block) {
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  const locale = getLocalePrefix();
+  const regionalNav = locale && !navMeta ? await loadFragment(`${locale}/nav`) : null;
+  const fragment = regionalNav || await loadFragment(navPath);
 
   // decorate nav DOM
   block.textContent = '';
@@ -157,7 +176,14 @@ export default async function decorate(block) {
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
-  decorateSearch(nav.querySelector('.nav-tools'));
+  let tools = nav.querySelector('.nav-tools');
+  if (!tools) {
+    tools = document.createElement('div');
+    tools.className = 'nav-tools';
+    nav.append(tools);
+  }
+  decorateSearch(tools);
+  tools.append(createRegionSwitcher(locale));
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
