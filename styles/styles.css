@@ -323,3 +323,175 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+.pace-page {
+  --pace-navy: #375272;
+  --pace-orange: #f1612d;
+  --pace-paper: #fff;
+  --pace-sky: #eff8fb;
+  --pace-mist: #f2f5f8;
+  --pace-text: #000;
+  --pace-gutter: clamp(20px, 4vw, 48px);
+  --pace-band: clamp(48px, 7vw, 112px);
+  --pace-width: 1200px;
+  --pace-heading: clamp(1.75rem, 4vw, 2.5rem);
+  --body-font-family: montserrat, arial, sans-serif;
+  --heading-font-family: var(--body-font-family);
+  --link-color: var(--pace-navy);
+  --link-hover-color: #24394f;
+  --nav-height: 78px;
+
+  color: var(--pace-text);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.pace-page main > .section {
+  margin: 0;
+  padding-block: var(--pace-band);
+}
+
+.pace-page main > .section > div {
+  max-width: var(--pace-width);
+  padding-inline: var(--pace-gutter);
+}
+
+.pace-page main > .section:has(> .metadata-wrapper) {
+  display: none;
+}
+
+.pace-page main > .section.pace-bleed {
+  padding: 0;
+}
+
+.pace-page main > .section.pace-bleed > div {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.pace-page main .pace-intro {
+  color: var(--pace-navy);
+  padding-block: clamp(40px, 4.5vw, 84px);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  text-align: center;
+}
+
+.pace-page .pace-intro p {
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+.pace-page main .pace-services {
+  padding-top: 12px;
+  background: url('https://www.wearepacesystems.com/wp-content/themes/pace-system/images/service-bg-shp.png')
+    right bottom / min(55%, 960px) auto no-repeat;
+}
+
+.pace-page .pace-services h2 {
+  margin: 24px 0 16px;
+  font-size: clamp(1.2rem, 3vw, 1.625rem);
+  text-align: center;
+}
+
+.pace-page .pace-title h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  margin: 0 0 28px;
+  font-size: var(--pace-heading);
+  font-weight: 600;
+  text-align: center;
+}
+
+.pace-page .pace-title h2::before,
+.pace-page .pace-title h2::after {
+  width: min(12vw, 149px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--pace-orange));
+  content: '';
+}
+
+.pace-page .pace-title h2::after {
+  transform: scaleX(-1);
+}
+
+.pace-page .pace-title .default-content-wrapper > p {
+  max-width: 60ch;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.pace-page main .pace-markets {
+  background: var(--pace-sky);
+}
+
+.pace-page main .pace-contact {
+  background: linear-gradient(var(--pace-paper) 35%, var(--pace-mist) 35%);
+}
+
+.pace-page main .pace-contact h2 {
+  color: var(--pace-navy);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.pace-page footer {
+  background: var(--pace-mist);
+  color: var(--pace-text);
+}
+
+.pace-page .header .nav-brand img {
+  width: 128px;
+}
+
+@media (width >= 1200px) {
+  .pace-page main .pace-video > div {
+    max-width: 1550px;
+    padding-inline: 0;
+  }
+
+  .pace-page main .pace-projects {
+    padding-bottom: 0;
+  }
+
+  .pace-page main .pace-projects > .project-carousel-wrapper {
+    max-width: none;
+    padding-inline: 0;
+  }
+}
+
+@media (width >= 900px) {
+  .pace-page > header {
+    position: absolute;
+    z-index: 2;
+    inset: 0 0 auto;
+  }
+
+  .pace-page .header .nav-wrapper {
+    isolation: isolate;
+    border: 0;
+    background: transparent;
+  }
+
+  .pace-page .header .nav-wrapper::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: var(--pace-paper);
+    clip-path: polygon(0 0, min(100%, calc(50% + 560px)) 0, min(100%, calc(50% + 514px)) 100%, 0 100%);
+    content: '';
+  }
+
+  .pace-page .header nav {
+    max-width: 1200px;
+  }
+
+  .pace-page .header .nav-sections > .default-content-wrapper > ul {
+    justify-content: end;
+    padding-inline-end: clamp(24px, 6vw, 110px);
+  }
+
+  .pace-page .header .nav-sections a[href='/pace'] {
+    color: var(--pace-orange);
+  }
+}

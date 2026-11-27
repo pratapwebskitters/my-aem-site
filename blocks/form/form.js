@@ -38,6 +38,7 @@ function createField({
 
   const field = document.createElement('div');
   field.className = 'form-field';
+  if (tag === 'textarea') field.classList.add('form-field-message');
   const caption = document.createElement('label');
   caption.htmlFor = id;
   caption.textContent = required ? `${label} (required)` : label;
@@ -78,12 +79,19 @@ function createField({
 
 export default async function decorate(block) {
   const row = block.firstElementChild;
+  const pace = block.classList.contains('pace');
+  const intro = pace ? [...(row?.nextElementSibling?.querySelectorAll('h2, p') || [])] : [];
   const source = getURL(row?.querySelector('a[href]')?.href || row?.textContent.trim());
   const status = document.createElement('p');
   status.className = 'form-status';
   status.setAttribute('role', 'status');
   status.textContent = 'Loading form…';
-  block.replaceChildren(status);
+  if (intro.length) {
+    const copy = document.createElement('div');
+    copy.className = 'form-pace-intro';
+    copy.append(...intro);
+    block.replaceChildren(copy, status);
+  } else block.replaceChildren(status);
 
   let rows;
   try {
@@ -110,7 +118,13 @@ export default async function decorate(block) {
   formCount += 1;
   const isSubmit = ({ name, type }) => type === 'submit' || name.toLowerCase() === 'submit';
   const fields = rows.filter((item) => item.name && !isSubmit(item)).map((item, index) => (
-    createField({ ...item, label: item.label || item.name }, `form-${formCount}-${index}`, form)
+    createField({
+      ...item,
+      label: item.label || item.name,
+      placeholder: pace && item.required && item.type !== 'hidden'
+        ? `${item.placeholder || item.label || item.name}*`
+        : item.placeholder,
+    }, `form-${formCount}-${index}`, form)
   )).filter(Boolean);
   if (!fields.length) {
     status.textContent = 'The form has no fields to display.';
@@ -129,7 +143,7 @@ export default async function decorate(block) {
   const buttonLabel = submit?.label || 'Submit';
   button.textContent = buttonLabel;
   form.append(button);
-  block.prepend(form);
+  status.before(form);
   status.textContent = '';
 
   form.addEventListener('submit', async (event) => {
@@ -142,6 +156,12 @@ export default async function decorate(block) {
     if (invalid.length) {
       if (document.activeElement === invalid[0].control) status.textContent = 'Check the highlighted fields and try again.';
       invalid[0].control.focus();
+      return;
+    }
+
+    if (pace && !submit?.placeholder) {
+      status.classList.add('form-preview');
+      status.textContent = 'Draft form validated. Add a submission endpoint to enable delivery.';
       return;
     }
 

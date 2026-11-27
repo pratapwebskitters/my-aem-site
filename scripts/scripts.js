@@ -189,6 +189,7 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
+  if (/^\/pace\/?$/.test(window.location.pathname)) doc.body.classList.add('pace-page');
   if (main) {
     decorateMain(main);
     if (['/', '/index'].includes(window.location.pathname)) {

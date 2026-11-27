@@ -18,3 +18,110 @@ footer .footer p {
     padding: 40px 32px 24px;
   }
 }
+
+.pace-page .footer > div {
+  box-sizing: border-box;
+  max-width: 1220px;
+  padding: clamp(36px, 4vw, 76px) var(--pace-gutter) 24px;
+  color: var(--pace-text);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.pace-page .footer .columns > div {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+}
+
+.pace-page .footer .columns > div > div {
+  min-width: 0;
+  order: initial;
+}
+
+.pace-page .footer .columns p {
+  max-width: 25rem;
+  margin-block: 0 12px;
+  color: var(--pace-navy);
+}
+
+.pace-page .footer .columns em {
+  color: var(--pace-orange);
+  font-style: normal;
+}
+
+.pace-page .footer .columns img {
+  display: block;
+  width: clamp(155px, 18vw, 240px);
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 25px;
+}
+
+.pace-page .footer .columns ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.pace-page .footer a {
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+.pace-page .footer .columns a[href='/pace'] {
+  color: var(--pace-orange);
+}
+
+.pace-page .footer .columns h3 {
+  margin: 0 0 22px;
+  font-size: 1.125rem;
+}
+
+.pace-page .footer .columns h3 + ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  text-transform: none;
+}
+
+.pace-page .footer .columns h3 + ul li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.pace-page .footer .columns h3 + ul img {
+  width: 16px;
+  height: 18px;
+  margin: 2px 0 0;
+  object-fit: contain;
+}
+
+.pace-page .footer .section + .section {
+  margin-top: clamp(28px, 5vw, 55px);
+  text-align: center;
+}
+
+.pace-page .footer .section + .section p + p {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #d2d8dc;
+}
+
+@media (width >= 768px) {
+  .pace-page .footer .columns > div {
+    grid-template-columns: 45fr 55fr;
+    gap: 32px;
+  }
+}
+
+.pace-page .footer .columns a[href*='linkedin.com'] {
+  color: var(--pace-text);
+  font-weight: 700;
+}

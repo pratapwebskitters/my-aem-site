@@ -1,0 +1,47 @@
+{
+  "total": 6,
+  "data": [
+    {
+      "Field": "name",
+      "Label": "Name",
+      "Type": "text",
+      "Placeholder": "Name",
+      "Required": true
+    },
+    {
+      "Field": "company",
+      "Label": "Company",
+      "Type": "text",
+      "Placeholder": "Company",
+      "Required": true
+    },
+    {
+      "Field": "phone",
+      "Label": "Phone",
+      "Type": "tel",
+      "Placeholder": "Phone",
+      "Required": true
+    },
+    {
+      "Field": "email",
+      "Label": "Email",
+      "Type": "email",
+      "Placeholder": "Email",
+      "Required": true
+    },
+    {
+      "Field": "message",
+      "Label": "Message",
+      "Type": "textarea",
+      "Placeholder": "Message",
+      "Required": false
+    },
+    {
+      "Field": "submit",
+      "Label": "Submit",
+      "Type": "submit",
+      "Placeholder": "",
+      "Required": false
+    }
+  ]
+}

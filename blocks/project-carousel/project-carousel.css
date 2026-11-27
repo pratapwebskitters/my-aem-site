@@ -1,0 +1,111 @@
+.project-carousel {
+  position: relative;
+}
+
+.project-carousel .project-carousel-track {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-flow: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.project-carousel .project-carousel-track > li {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(340px, 30vw, 570px);
+  overflow: hidden;
+  background: #e7eef3;
+  scroll-snap-align: start;
+}
+
+.project-carousel .project-carousel-track > li img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+}
+
+.project-carousel .project-carousel-details {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 28px 28px 68px;
+  overflow: auto;
+  background: rgb(255 255 255 / 91%);
+  font-size: 0.9375rem;
+}
+
+.project-carousel .project-carousel-details h3 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+.project-carousel .project-carousel-details ul {
+  padding-inline-start: 18px;
+}
+
+.project-carousel .project-carousel-toggle {
+  position: absolute;
+  inset: auto 12px 14px auto;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--pace-navy, #375272);
+  color: #fff;
+}
+
+.project-carousel .project-carousel-toggle::before {
+  content: '+' / '';
+}
+
+.project-carousel .project-carousel-toggle[aria-expanded='true']::before {
+  content: '−' / '';
+}
+
+.project-carousel .project-carousel-controls {
+  position: absolute;
+  inset: 50% 0 auto;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.project-carousel .project-carousel-controls[hidden] {
+  display: none;
+}
+
+.project-carousel .project-carousel-controls button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--pace-navy, #375272);
+  color: #fff;
+  font-size: 1.5rem;
+  pointer-events: auto;
+}
+
+@media (width >= 768px) {
+  .project-carousel .project-carousel-track {
+    grid-auto-columns: calc((100% - 16px) / 2);
+  }
+}
+
+@media (width >= 1200px) {
+  .project-carousel .project-carousel-track {
+    grid-auto-columns: calc((100% - 48px) / 4);
+  }
+}
